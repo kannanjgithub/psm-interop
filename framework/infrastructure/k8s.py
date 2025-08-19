@@ -178,7 +178,6 @@ class KubernetesApiManager:
             raise NotImplementedError(
                 f"{kind} {api_name}/{version} not implemented."
             )
-
         return self._load_dynamic_api(api_name, version, kind)
 
     @functools.cache
@@ -190,7 +189,6 @@ class KubernetesApiManager:
             raise NotImplementedError(
                 f"{kind} {api_name}/{version} not implemented."
             )
-
         return self._load_dynamic_api(api_name, version, kind)
 
     @functools.cache
@@ -609,8 +607,6 @@ class KubernetesNamespace:  # pylint: disable=too-many-public-methods
         kind: RouteKind,
     ) -> bool:
         route = self._get_dyn_resource(self.gamma_route_apis[kind], name)
-        print("Route metadata:", flush=True)
-        print(route.metadata, flush=True)
         return (
             route.metadata.annotations is not None
             and self.MESH_ANNOTATION in route.metadata.annotations
