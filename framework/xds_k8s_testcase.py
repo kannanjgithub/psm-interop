@@ -94,6 +94,7 @@ _TD_CONFIG_MAX_WAIT_SEC: Final[int] = int(TD_CONFIG_MAX_WAIT.total_seconds())
 
 
 def parse_lang_spec_from_flags() -> TestConfig:
+    logger.info("Client image provided: " + xds_k8s_flags.CLIENT_IMAGE.value)
     test_config = TestConfig(
         client_lang=skips.get_lang(xds_k8s_flags.CLIENT_IMAGE.value),
         server_lang=skips.get_lang(xds_k8s_flags.SERVER_IMAGE.value),

@@ -102,6 +102,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE_NAME)
+            - name: GOOGLE_CLOUD_PROJECT
+              value: kannanj-psm-interop-testing
             % endif
           volumeMounts:
             - mountPath: /tmp/grpc-xds/
@@ -114,6 +116,21 @@ spec:
             requests:
               cpu: 100m
               memory: 512Mi
+        - name: otel-collector
+          # Use 'contrib' image which contains the Google Cloud exporter
+          # Alternately use gcr.io/google-cloud-opentelemetry/agent/go-collector
+          image: otel/opentelemetry-collector-contrib:0.111.0 
+          args: ["--config=/etc/otelcol/config.yaml"]
+          resources:
+            limits:
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: otel-config-vol
+              mountPath: /etc/otelcol
+              
       initContainers:
         - name: grpc-td-init
           image: ${td_bootstrap_image}
@@ -147,4 +164,7 @@ spec:
         - name: grpc-td-conf
           emptyDir:
             medium: Memory
+        - name: otel-config-vol
+          configMap:
+            name: otel-sidecar-config            
 ...

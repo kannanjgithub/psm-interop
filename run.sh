@@ -108,7 +108,7 @@ main() {
   PS4='+ $(date "+[%H:%M:%S %Z]")\011 '
   set -x
   # Append args after --flagfile, so they take higher priority.
-  exec python "${py_file}" --flagfile="${XDS_K8S_CONFIG}" "${extra_flags[@]}" "$@"
+  exec python3.12 "${py_file}" --flagfile="${XDS_K8S_CONFIG}" "${extra_flags[@]}" "$@"
 }
 
 main "$@"
